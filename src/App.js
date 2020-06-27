@@ -1,25 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+// import {Provider} from 'react-redux';
 import './App.css';
+import login from './components/login';
+import todoList from './components/todoList';
+import {BrowserRouter,Route, Switch} from 'react-router-dom';
+import addtodoList from './components/addTodoList';
+import edittodoList from './components/editTodoList';
+import signUp from './components/signUp';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>
+      <BrowserRouter >
+        <Switch>
+            <Route exact path='/' component={login}></Route>
+            <Route exact path='/signup' component={signUp}></Route>
+            <Route exact path='/todoList' component={todoList}></Route>
+            <Route exact path='/add' component={addtodoList}></Route>
+            <Route exact path='/edit' component={edittodoList}></Route>
+        </Switch>
+    </BrowserRouter>
+  </div>
   );
 }
 
