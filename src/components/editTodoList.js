@@ -4,6 +4,7 @@ import { TextField, RaisedButton, AppBar } from "material-ui";
 import Axios from "axios";
 import { API } from "../api";
 export default class edittodoList extends Component {
+  documentData;
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -14,49 +15,57 @@ export default class edittodoList extends Component {
       status: "",
     };
   }
-  componentDidMount(){
-    //   console.log('edit----',this.props.location.state.data.status);
+  componentDidMount() {
+    this.documentData = JSON.parse(localStorage.getItem('user'));
+    if (localStorage.getItem("user") && localStorage.getItem("token")) {
+      // console.log("this.documentData", this.documentData);
       this.getEditData();
+    } else {
+      this.props.history.push("/");
+    }
   }
-  getEditData(){
-    this.setState({taskName:this.props.location.state.data.taskName,
-    description:this.props.location.state.data.description,
-    status:this.props.location.state.data.status});
+  getEditData() {
+    this.setState({
+      taskName: this.props.location.state.data.taskName,
+      description: this.props.location.state.data.description,
+      status: this.props.location.state.data.status,
+    });
   }
   handleClick(event) {
-    try{
+    try {
       var payload = {
-          _id:this.props.location.state.data._id,
+        _id: this.props.location.state.data._id,
         taskName: this.state.taskName,
         description: this.state.description,
-        status:this.state.status
+        loginId: this.documentData._id,
+        status: this.state.status,
       };
-      console.log("payload", payload);
-  
+      // console.log("payload", payload);
+
       Axios.patch(API + "/api/todoLists", payload)
-        .then(function (response) {
-          console.log(response);
-          if (response.status === 200) {
-            this.props.history.push('/todoList');
-            console.log("Update successfull");
-          } else if (response.status === 204) {
-            console.log("");
-          } else {
-            console.log("");
-          }
-        }.bind(this))
+        .then(
+          function (response) {
+            console.log(response);
+            if (response.status === 200) {
+              this.props.history.push("/todoList");
+              console.log("Update successfull");
+            } else if (response.status === 204) {
+              console.log("");
+            } else {
+              console.log("");
+            }
+          }.bind(this)
+        )
         .catch(function (error) {
           console.log(error);
         });
-    }catch{
-
-    }
+    } catch {}
   }
   render() {
     return (
       <div>
         <MuiThemeProvider>
-        <AppBar title="Edit Todo" />
+          <AppBar title="Edit Todo" />
           <div className="container">
             <div
               style={{

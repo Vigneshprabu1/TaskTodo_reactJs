@@ -13,6 +13,7 @@ export default class login extends Component {
     this.state = {
       username: "",
       password: "",
+      id:''
     };
   }
   handleClick = (event)=>{
@@ -26,6 +27,12 @@ export default class login extends Component {
       .then(function (response) {
         // console.log(response);
         if (response.status === 200) {
+          this.setState({id: response.data.user._id});
+          // localStorage.setItem(response.data.user);
+          localStorage.setItem('user',JSON.stringify(response.data.user));
+          localStorage.setItem('token',JSON.stringify(response.data.token));
+          // console.log('response', response.data.user._id);
+          
          this.props.history.push('/todoList');
           console.log("Login successfull");
         } else if (response.status === 204) {

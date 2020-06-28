@@ -26,6 +26,22 @@ table {
     margin: 4px 2px;
     cursor: pointer;
   }
+
+  .logout {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    width: 60px;
+    height: 40px;
+    border-radius: 12px;
+    /* padding: 15px 32px; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
   
   .edit {
     background-color: #4CAF50; /* Green */

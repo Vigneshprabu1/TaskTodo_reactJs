@@ -4,6 +4,7 @@ import { TextField, RaisedButton, AppBar } from "material-ui";
 import Axios from "axios";
 import { API } from "../api";
 export default class addtodoList extends Component {
+  documentData;
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -13,14 +14,24 @@ export default class addtodoList extends Component {
       status: "",
     };
   }
+  componentDidMount(){
+    this.documentData = JSON.parse(localStorage.getItem('user'));
+    if (localStorage.getItem("user") && localStorage.getItem("token")) {
+      // console.log("this.documentData", this.documentData);
+      // this.getEditData();
+    } else {
+      this.props.history.push("/");
+    }
+  }
   handleClick(event) {
     try{
       var payload = {
         taskName: this.state.taskName,
         description: this.state.description,
+        loginId:this.documentData._id,
         status:'incomplete'
       };
-      console.log("payload", payload);
+      // console.log("payload", payload);
   
       Axios.post(API + "/api/todoLists", payload)
         .then(function (response) {
@@ -37,8 +48,9 @@ export default class addtodoList extends Component {
         .catch(function (error) {
           console.log(error);
         });
-    }catch{
-
+    }catch(error){
+      console.log('login',error);
+      
     }
   }
   render() {

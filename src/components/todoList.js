@@ -6,7 +6,7 @@ import './todoList.css';
 import { API } from "../api";
 
 export default class todoList extends Component {
-  
+  documentData;
   constructor(props) {
     super(props);
     this.getAllTodoList = this.getAllTodoList.bind(this);
@@ -20,8 +20,13 @@ export default class todoList extends Component {
     };
   }
   componentDidMount(){
+    this.documentData = JSON.parse(localStorage.getItem('user'));
+    if (localStorage.getItem('user')&& localStorage.getItem('token')) {
+      // console.log('this.documentData',this.documentData);
     this.getAllTodoList();
-    
+} else {
+  this.props.history.push('/');
+}
   }
 
   editData = (a)=>{
@@ -31,13 +36,14 @@ export default class todoList extends Component {
   getAllTodoList(){
     try {
       var payload = {
-        taskName: this.state.taskName,
-        description: this.state.description,
-        status:'incomplete'
+        // taskName: this.state.taskName,
+        // description: this.state.description,
+        // status:'incomplete'
+        loginId: this.documentData._id
       };
-      console.log("payload", payload);
+      // console.log("payload", payload);
   
-      Axios.get(API + "/api/todoLists")
+      Axios.post(API + "/api/todoLists/id",payload)
         .then(function (response) {
           console.log(response.data.length);
           if (response.status === 200) {
@@ -97,6 +103,10 @@ export default class todoList extends Component {
       
     }
   }
+  logOut(){
+    localStorage.clear();
+    this.props.history.push('/');
+  }
   renderTableData() {
     return this.state.taskList.map((a, index) => {
        const { taskName, description,status } = a;
@@ -152,6 +162,9 @@ export default class todoList extends Component {
          <MuiThemeProvider>
          <div className="container">
             <AppBar title="ToDoList" />
+            <div align="right">
+              <button className="logout" onClick={()=>this.logOut()}>LogOut </button>
+              </div>
             <div style={{padding:10,paddingLeft:20,backgroundColor:'#FFF'}}>
               <h1>TaskList</h1>
               <div align="right">
